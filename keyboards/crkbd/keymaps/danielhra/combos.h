@@ -14,16 +14,16 @@ enum combos {
   COMBO_REDO,
 };
 const uint16_t PROGMEM combo_capslock[] = {CTL_A, ALT_S, COMBO_END};
-const uint16_t PROGMEM combo_parens_left[] = {SHT_F, KC_R, COMBO_END};
-const uint16_t PROGMEM combo_parens_right[] = {SHT_J, KC_U, COMBO_END};
-const uint16_t PROGMEM combo_curly_left[] = {CMD_D, KC_E, COMBO_END};
-const uint16_t PROGMEM combo_curly_right[] = {CMD_K, KC_I, COMBO_END};
-const uint16_t PROGMEM combo_bracket_left[] = {ALT_S, KC_W, COMBO_END};
-const uint16_t PROGMEM combo_bracket_right[] = {ALT_L, KC_O, COMBO_END};
-const uint16_t PROGMEM combo_copy[]  = {SHT_F, KC_V, COMBO_END};
-const uint16_t PROGMEM combo_paste[] = {SHT_J, KC_M, COMBO_END};
-const uint16_t PROGMEM combo_undo[] = {CMD_D, KC_C, COMBO_END};
-const uint16_t PROGMEM combo_redo[] = {CMD_K, KC_COMM, COMBO_END};
+const uint16_t PROGMEM combo_parens_left[] = {KC_R, KC_E, KC_W, COMBO_END};
+const uint16_t PROGMEM combo_parens_right[] = {KC_U, KC_I, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_curly_left[] = {KC_R, KC_W, COMBO_END};
+const uint16_t PROGMEM combo_curly_right[] = {KC_U, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_bracket_left[] = {KC_Q, KC_R, COMBO_END};
+const uint16_t PROGMEM combo_bracket_right[] = {KC_U,KC_P, COMBO_END};
+const uint16_t PROGMEM combo_copy[]  = {KC_V, MEH_T(KC_C), COMBO_END};
+const uint16_t PROGMEM combo_paste[] = {KC_M, MEH_T(KC_COMM), COMBO_END};
+const uint16_t PROGMEM combo_undo[] = {MEH_T(KC_C), ALGR_T(KC_X), COMBO_END};
+const uint16_t PROGMEM combo_redo[] = {MEH_T(KC_COMM), ALGR_T(KC_DOT), COMBO_END};
 
 
 combo_t key_combos[COMBO_COUNT] = {

@@ -47,25 +47,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <time.h>
 #include "frames.h"
 #include "combos.h"
-
 uint16_t roll(uint16_t N);
 
 static int num_keypresses = 0;
 static int current_frame = 0;
 
-// Layers
-enum {
-	_BASE,
-	_SYM,
-	_NUM,
-	_GREEK,
-	_MATH,
-	_GAME,
-	_WPN,
-	_DICE
-};
-
-enum layers { BASE, MEDR, NAVR, MOUR, NSSL, NSL, FUNL, GAME };
+enum layers { BASE, MED, NAV, MOU, SYM, NUM, FUN, GAME };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_split_3x6_3(
@@ -74,12 +61,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------------+----------------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        KC_LCTL, LCTL_T(KC_A),   LALT_T(KC_S),   LGUI_T(KC_D),      LSFT_T(KC_F),      KC_G,              KC_H,              LSFT_T(KC_J),LGUI_T(KC_K),      LALT_T(KC_L),      LCTL_T(KC_QUOT),KC_LCTL,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    KC_LSFT,KC_Z,              ALGR_T(KC_X),      KC_C,              KC_V,              KC_B,              KC_N,              KC_M,              KC_COMM,           ALGR_T(KC_DOT),    KC_SLSH,KC_LSFT,
+    KC_LSFT,KC_Z,              ALGR_T(KC_X),      MEH_T(KC_C),              KC_V,              KC_B,              KC_N,              KC_M,              MEH_T(KC_COMM),           ALGR_T(KC_DOT),    KC_SLSH,KC_LSFT,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-    LT(MEDR, KC_ESC),  LT(NAVR, KC_SPC),  LT(MOUR, KC_TAB),  LT(NSSL, KC_ENT),  LT(NSL, KC_BSPC),  LT(FUNL, KC_DEL)
+    LT(MED, KC_ESC),  LT(NAV, KC_SPC),  LT(MOU, KC_TAB),  LT(SYM, KC_ENT),  LT(NUM, KC_BSPC),  LT(FUN, KC_DEL)
                                //`--------------------------'  `--------------------------'
   ),
-  [NAVR] = LAYOUT_split_3x6_3(
+  [NAV] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     KC_LALT,KC_RST,  KC_NA,   KC_NA,   KC_NA,   KC_NA,   LGUI(KC_X), LGUI(KC_V), LGUI(KC_C), LGUI(KC_Z), LGUI(S(KC_Z)),TG(GAME),
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -90,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NA,   KC_NA,   KC_NA,   KC_ENT,  KC_BSPC, KC_DEL
                                //`--------------------------'  `--------------------------'
   ),
-  [MOUR] = LAYOUT_split_3x6_3(
+  [MOU] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     KC_LALT,KC_RST,  KC_NA,   KC_NA,   KC_NA,   KC_NA,   KC_NU,   KC_NU,   KC_NU,   KC_NU,   KC_NU,TG(GAME),
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -101,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NA,   KC_NA,   KC_NA,   KC_BTN1, KC_BTN3, KC_BTN2
                                //`--------------------------'  `--------------------------'
   ),
-  [MEDR] = LAYOUT_split_3x6_3(
+  [MED] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     KC_LALT,KC_RST,  KC_NA,   KC_NA,   KC_NA,   KC_NA,   KC_TOG,  KC_MOD,  KC_HUI,  KC_SAI,  KC_VAI,TG(GAME),
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -112,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NA,   KC_NA,   KC_NA,   KC_MSTP, KC_MPLY, KC_MUTE
                                //`--------------------------'  `--------------------------'
   ),
-  [FUNL] = LAYOUT_split_3x6_3(
+  [FUN] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     KC_LALT,KC_F12,  KC_F7,   KC_F8,   KC_F9,   KC_PSCR, KC_NA,   KC_NA,   KC_NA,   KC_NA,   KC_RST,TG(GAME),
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -123,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_APP,  KC_SPC,  KC_TAB,  KC_NA,   KC_NA,   KC_NA
                                //`--------------------------'  `--------------------------'
   ),
-  [NSL] = LAYOUT_split_3x6_3(
+  [NUM] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     KC_LALT,KC_LBRC, KC_7,    KC_8,    KC_9,    KC_RBRC, KC_NA,   KC_NA,   KC_NA,   KC_NA,   KC_RST,TG(GAME),
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -134,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_DOT,  KC_0,    KC_MINS, KC_NA,   KC_NA,   KC_NA
                                //`--------------------------'  `--------------------------'
   ),
-  [NSSL] = LAYOUT_split_3x6_3(
+  [SYM] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     KC_LALT,KC_LCBR, KC_AMPR, KC_ASTR, KC_LPRN, KC_RCBR, KC_NA,   KC_NA,   KC_NA,   KC_NA,   KC_RST,TG(GAME),
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -171,7 +158,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  srand(time(0));  // seed random for ROLL
   return OLED_ROTATION_270;
 }
 
@@ -181,26 +167,25 @@ void oled_render_layer_state(void) {
         case BASE:
             oled_write_raw_P(apple_logo, LOGO_SIZE);
             break;
-        case NAVR:
-            oled_write_raw_P(coffee_logo, LOGO_SIZE);
+        case NAV:
+            oled_write_raw_P(cardano_logo, LOGO_SIZE);
             break;
-        case NSSL:
-            oled_write_raw_P(sym_logo, LOGO_SIZE);
+        case SYM:
+            oled_write_raw_P(eth_logo, LOGO_SIZE);
             break;
-        case MEDR:
-            oled_write_raw_P(apple_logo, LOGO_SIZE);
+        case MED:
+            oled_write_raw_P(stellar_logo, LOGO_SIZE);
             break;
-        case FUNL:
-            oled_write_raw_P(num_logo, LOGO_SIZE);
+        case FUN:
+            oled_write_raw_P(stellar_logo, LOGO_SIZE);
             break;
-        case MOUR:
-            oled_write_raw_P(greek_logo, LOGO_SIZE);
+        case MOU:
+            oled_write_raw_P(eth_logo, LOGO_SIZE);
             break;
-        case NSL:
-            oled_write_raw_P(math_logo, LOGO_SIZE);
+        case NUM:
+            oled_write_raw_P(cardano_logo, LOGO_SIZE);
             break;
         case GAME:
-	        oled_scroll_off();
             oled_write_raw_P(game_logo, LOGO_SIZE);
             break;
     }
